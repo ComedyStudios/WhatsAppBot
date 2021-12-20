@@ -8,6 +8,7 @@ mouse = Controller()
 
 
 #this programm only works when whatsapp web is on the Main window in full screen mode
+#TODO: remove all repetitions
 class WhatsApp:
     def __init__(self, speed=-0.5, click_speed = .3):
         self.speed = speed
@@ -15,6 +16,7 @@ class WhatsApp:
         self.message = ''
         self.last_message = ''
         self.response = 'test'
+        self.reciever_name =''
 
     def nav_green_dot(self):
         try:
@@ -69,7 +71,7 @@ class WhatsApp:
             pt.moveRel(10, -100, duration=self.speed)
             pt.click()
         except Exception as e:
-            print('Exception respond)', e)
+            print('Exception (respond)', e)
 
     def send_message(self):
         try:
@@ -80,21 +82,45 @@ class WhatsApp:
         except Exception as e:
             print('Exception(send_message)', e)
 
+    def open_contact_tab(self):
+        try:
+            position = pt.locateOnScreen('lupe.png')
+            pt.moveTo(position[0:2], duration = self.speed)
+            pt.moveRel(50, 40, duration=self.speed)
+            pt.click()
+            pt.moveRel(0, 40, duration=self.speed)
+            pt.click()
+        except Exception as e:
+            print('Exception(open_contact_tab)', e)
 
-
-
-
+    def get_reciever_name(self):
+        try:
+            position = pt.locateOnScreen('call_icon.png')
+            pt.moveTo(position[0:2], duration=self.speed)
+            pt.moveRel(80, -70, duration=self.speed)
+            pt.tripleClick()
+            pt.click(button='RIGHT')
+            pt.moveRel(10, 20, duration=self.speed)
+            pt.click()
+            self.reciever_name = pc.paste()
+            print('The Reciever is: ' + self.reciever_name)
+        except Exception as e:
+            print('Exception(open_contact_tab)', e)
 
 
 wa_bot = WhatsApp(speed=.5,click_speed=.3)
 sleep(2)
-wa_bot.nav_green_dot()
-wa_bot.nav_message()
-wa_bot.get_message()
-wa_bot.process_message()
-wa_bot.nav_text_box()
-wa_bot.respond()
-wa_bot.send_message()
+wa_bot.open_contact_tab()
+sleep(1)
+wa_bot.get_reciever_name()
+
+# wa_bot.nav_green_dot()
+# wa_bot.nav_message()
+# wa_bot.get_message()
+# wa_bot.process_message()
+# wa_bot.nav_text_box()
+# wa_bot.respond()
+# wa_bot.send_message()
 
 
 
